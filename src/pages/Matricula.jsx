@@ -80,7 +80,7 @@ function Matricula() {
                 </h2>
 
                 <p className="text-gray-400 mt-2">
-                  Créditos: {curso.creditos}
+                  Créditos: {curso.creditos}gwv
                 </p>
 
                 <button
