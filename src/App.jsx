@@ -1,3 +1,11 @@
+import Dashboard from "./pages/Dashboard";
+import MatriculaWizard from "./pages/MatriculaWizard";
+import Matricula from "./pages/Matricula";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Welcome from "./pages/Welcome";
+import Login from "./pages/Login";
+
 import { useState } from 'react'
 
 const defaultUser = {
@@ -14,32 +22,42 @@ const defaultUser = {
 }
 
 function App() {
-  const [page, setPage] = useState('login')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [remember, setRemember] = useState(false)
-  const [error, setError] = useState('')
+  const [page, setPage] = useState("welcome");
 
-  const handleLogin = (event) => {
-    event.preventDefault()
-    if (!email || !password) {
-      setError('Por favor ingresa correo y contraseña.')
-      return
+  // Handler for navigation
+  const handleNavigation = (targetPage) => {
+    setPage(targetPage);
+  };
+
+  // Helper for conditional rendering within layout
+  const renderSubView = () => {
+    switch (page) {
+      case "dashboard":
+        return <Dashboard onNavigate={handleNavigation} />;
+      case "studentDetails":
+        return <StudentDetails />;
+      case "matricula":
+        return <Matricula />;
+      case "matriculaWizard":
+        return <MatriculaWizard />;
+      case "horarios":
+        return <ComingSoon title="Horarios Académicos" />;
+      case "pagos":
+        return <ComingSoon title="Pagos y Pensiones" />;
+      case "configuracion":
+        return <ComingSoon title="Configuración del Sistema" />;
+      default:
+        return <Dashboard onNavigate={handleNavigation} />;
     }
-    if (!email.includes('@')) {
-      setError('Ingresa un correo válido.')
-      return
-    }
-    setError('')
-    setPage('dashboard')
+  };
+
+  // If outside main app layout (welcome and login screens)
+  if (page === "welcome") {
+    return <Welcome onNavigate={handleNavigation} />;
   }
 
-  const handleLogout = () => {
-    setPage('login')
-    setEmail('')
-    setPassword('')
-    setRemember(false)
-    setError('')
+  if (page === "login") {
+    return <Login onNavigate={handleNavigation} />;
   }
 
   const renderLogin = () => (
@@ -277,12 +295,10 @@ function App() {
   )
 
   return (
-    <>
-      {page === 'login' && renderLogin()}
-      {page === 'dashboard' && renderDashboard()}
-      {page === 'studentDetails' && renderStudentDetails()}
-    </>
-  )
+    <MainLayout activePage={page} onNavigate={handleNavigation}>
+      {renderSubView()}
+    </MainLayout>
+  );
 }
 
 export default App;
