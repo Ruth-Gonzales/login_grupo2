@@ -1,4 +1,10 @@
+import Dashboard from "./pages/Dashboard";
+import MatriculaWizard from "./pages/MatriculaWizard";
+import Matricula from "./pages/Matricula";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Welcome from "./pages/Welcome";
+import Login from "./pages/Login";
 
 import { useState } from 'react'
 
@@ -287,4 +293,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
